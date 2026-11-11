@@ -19,7 +19,33 @@ python render.py --scene 2       # re-render one scene and re-join (fast)
 python render.py --still 2 1.2   # one frame of scene 2 at 1.2 s -> out/*.png
 ```
 
-## How it's put together
+## Showreel (the big one)
+
+A 32-second, 120 BPM piece in six scenes, with a soundtrack synthesized from scratch. Everything is
+numpy / OpenCV / Pillow / ffmpeg: no engine, no assets, no keyframes.
+
+| # | Time | Scene | Technique |
+|---|------|-------|-----------|
+| 1 | 0-6 s | Particles | 70,000 particles swirl, snap into the word MOTION, pulse on the beat, explode |
+| 2 | 6-12 s | Kinetic type | beat-locked word slams, then a modular grid of six live mini-animations |
+| 3 | 12-18 s | Liquid glass | metaball field with refraction, per-channel dispersion and fresnel |
+| 4 | 18-24 s | 3D knot | 200,000 lit points, a sphere morphing into a torus knot, motion blur |
+| 5 | 24-28 s | Tunnel | winding hex tunnel at speed with punch-in type |
+| 6 | 28-32 s | End card | ripple rings, staggered title, counting stats |
+
+Every frame goes through one post stack (bloom, chromatic aberration, vignette, film grain, tone-map),
+and every scene cut gets a flash + colour-split impact that lines up with a bass drop in the audio.
+
+```bash
+pip install -r requirements.txt            # Pillow, numpy, opencv-python, scipy
+python -m showreel.audio                   # synthesize the score -> out/audio.wav
+python -m showreel.render                  # render all scenes (2 in parallel) -> out/showreel.mp4
+python -m showreel.render --scene 4        # re-render one scene and re-join
+python -m showreel.render --sheet          # contact sheet of key frames -> out/sheet.png
+python -m showreel.render --still 3 2.0    # one frame (scene 3 at 2.0 s)
+```
+
+## The simple starter (how it's put together)
 
 ```
 motion/
